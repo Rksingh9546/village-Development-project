@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Environment System</title>
+    <style>
+        :root {
+            --primary-color: #f0a03f;
+            --primary-dark: #d88c27;
+            --primary-light: #f8c078;
+            --text-dark: #333;
+            --text-light: #f9f9f9;
+            --bg-light: #f9f9f9;
+            --bg-dark: #2d3e50;
+            --success: #2ecc71;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 1rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            padding: 2rem 1rem;
+        }
+
+        .header-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(45, 62, 80, 0.8), rgba(45, 62, 80, 0.6)), url('/api/placeholder/1200/600') no-repeat center center;
+            background-size: cover;
+            z-index: 1;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .goals {
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .goals h2 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .goal-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .goal-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .components {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 4rem 0;
+        }
+
+        .components h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .component-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background-color: transparent;
+            border: none;
+            color: var(--text-light);
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem 1rem;
+            cursor: pointer;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background-color: rgba(240, 160, 63, 0.2);
+        }
+
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .tab-content.active {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .feature-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card ul {
+            list-style-position: inside;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        .tools {
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .tools h2 {
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .tool-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .tool-card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .progress-section {
+            padding: 4rem 0;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .progress-section h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .progress-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .progress-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0;
+            transition: width 1.5s ease;
+        }
+
+        .community {
+            padding: 4rem 0;
+        }
+
+        .community h2 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        .cta {
+            padding: 4rem 0;
+            text-align: center;
+            background-color: var(--primary-color);
+            color: var(--text-dark);
+        }
+
+        .cta h2 {
+            margin-bottom: 2rem;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+        }
+
+        .btn-secondary {
+            background-color: var(--text-light);
+            color: var(--primary-dark);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section {
+            flex: 1 1 250px;
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .copyright {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .tab-content.active {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation for the progress bar */
+        .animate-progress .progress-fill {
+            animation: progressAnimation 2s ease-out forwards;
+        }
+
+        @keyframes progressAnimation {
+            from { width: 0; }
+            to { width: var(--target-width); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
+    <header>
+        <div class="header-bg"></div>
+        <div class="header-content">
+            <h1>Village Environment System</h1>
+            <p class="subtitle">Creating a clean, green, and sustainable village environment</p>
+            <div class="cta-buttons">
+                <a href="Main.html" class="btn btn-primary">Home</a>
+                <a href="#components" class="btn btn-primary">Explore Components</a>
+                <a href="#community" class="btn btn-secondary">Join Community</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="goals">
+        <div class="container">
+            <h2>Key Goals</h2>
+            <p>Our comprehensive environmental system aims to transform village ecosystems through sustainable practices and community involvement</p>
+            
+            <div class="goals-grid">
+                <div class="goal-card" id="goal1">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Sustainable Practices</h3>
+                    <p>Promote eco-friendly practices that ensure long-term environmental sustainability</p>
+                </div>
+                <div class="goal-card" id="goal2">
+                    <i class="fas fa-wind"></i>
+                    <h3>Clean Environment</h3>
+                    <p>Ensure clean air, water, and soil for better health and well-being</p>
+                </div>
+                <div class="goal-card" id="goal3">
+                    <i class="fas fa-tree"></i>
+                    <h3>Green Cover</h3>
+                    <p>Increase plantation and maintain forest cover to enhance biodiversity</p>
+                </div>
+                <div class="goal-card" id="goal4">
+                    <i class="fas fa-recycle"></i>
+                    <h3>Waste Management</h3>
+                    <p>Implement effective waste segregation, collection, and recycling systems</p>
+                </div>
+                <div class="goal-card" id="goal5">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Awareness</h3>
+                    <p>Educate and involve the community in environmental protection activities</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="components" id="components">
+        <div class="container">
+            <h2>Main Components of the Environment System</h2>
+            
+            <div class="component-tabs">
+                <button class="tab-btn active" data-tab="trees">🌳 Tree Plantation</button>
+                <button class="tab-btn" data-tab="waste">🚮 Waste Management</button>
+                <button class="tab-btn" data-tab="water">💧 Water Conservation</button>
+                <button class="tab-btn" data-tab="energy">⚡ Renewable Energy</button>
+                <button class="tab-btn" data-tab="monitoring">🔍 Environmental Monitoring</button>
+                <button class="tab-btn" data-tab="infrastructure">🏘️ Eco-friendly Infrastructure</button>
+                <button class="tab-btn" data-tab="education">📚 Awareness & Education</button>
+            </div>
+            
+            <div class="tab-content active" id="trees">
+                <div class="feature-card">
+                    <h3>Tree Plantation Drives</h3>
+                    <ul>
+                        <li>Seasonal community plantation events</li>
+                        <li>Focus on native species</li>
+                        <li>Participation certificates for volunteers</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Household Greening</h3>
+                    <ul>
+                        <li>Each household plants 5 trees minimum</li>
+                        <li>Free saplings distribution program</li>
+                        <li>Competitions for best garden</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Green Zones</h3>
+                    <ul>
+                        <li>Village parks maintenance</li>
+                        <li>School green zones</li>
+                        <li>Roadside plantation maintenance</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="waste">
+                <div class="feature-card">
+                    <h3>Waste Segregation</h3>
+                    <ul>
+                        <li>Two-bin system (biodegradable & non-biodegradable)</li>
+                        <li>Household training programs</li>
+                        <li>Regular waste audits</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Composting Units</h3>
+                    <ul>
+                        <li>Village-level composting facility</li>
+                        <li>Household composting kits</li>
+                        <li>Using compost for organic farming</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Recycling Centers</h3>
+                    <ul>
+                        <li>Collection points for recyclables</li>
+                        <li>Tie-ups with recycling companies</li>
+                        <li>Upcycling workshops</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="water">
+                <div class="feature-card">
+                    <h3>Rainwater Harvesting</h3>
+                    <ul>
+                        <li>Rooftop collection systems</li>
+                        <li>Community collection tanks</li>
+                        <li>Percolation pits</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Agricultural Water Use</h3>
+                    <ul>
+                        <li>Drip irrigation promotion</li>
+                        <li>Water scheduling systems</li>
+                        <li>Drought-resistant crop varieties</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Water Body Rejuvenation</h3>
+                    <ul>
+                        <li>Pond cleaning drives</li>
+                        <li>Well maintenance</li>
+                        <li>Building check dams</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="energy">
+                <div class="feature-card">
+                    <h3>Solar Installations</h3>
+                    <ul>
+                        <li>Public building solar panels</li>
+                        <li>Subsidized home solar kits</li>
+                        <li>Solar-powered irrigation pumps</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Street Lighting</h3>
+                    <ul>
+                        <li>LED solar street lights</li>
+                        <li>Motion sensor lighting</li>
+                        <li>Smart lighting controls</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Biogas Units</h3>
+                    <ul>
+                        <li>Community biogas plant</li>
+                        <li>Cow dung collection system</li>
+                        <li>Biogas for cooking fuel</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="monitoring">
+                <div class="feature-card">
+                    <h3>Air & Water Testing</h3>
+                    <ul>
+                        <li>Quarterly water quality tests</li>
+                        <li>Air quality monitoring station</li>
+                        <li>Soil contamination checks</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>IoT-Based Monitoring</h3>
+                    <ul>
+                        <li>Sensor networks across village</li>
+                        <li>Real-time pollution alerts</li>
+                        <li>Data analytics for trends</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Community Feedback</h3>
+                    <ul>
+                        <li>Mobile app for reporting issues</li>
+                        <li>Monthly environmental reviews</li>
+                        <li>Quick response team</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="infrastructure">
+                <div class="feature-card">
+                    <h3>Eco-Homes</h3>
+                    <ul>
+                        <li>Mud and brick construction</li>
+                        <li>Natural cooling systems</li>
+                        <li>Energy-efficient design</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Building Materials</h3>
+                    <ul>
+                        <li>Local and sustainable sources</li>
+                        <li>Recycled material use</li>
+                        <li>Low environmental impact choices</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Sanitation Systems</h3>
+                    <ul>
+                        <li>Bio-toilet installations</li>
+                        <li>Grey water recycling</li>
+                        <li>Proper drainage networks</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="tab-content" id="education">
+                <div class="feature-card">
+                    <h3>Workshops & Training</h3>
+                    <ul>
+                        <li>Monthly environmental workshops</li>
+                        <li>Hands-on training for practices</li>
+                        <li>Expert sessions on sustainable living</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>School Programs</h3>
+                    <ul>
+                        <li>Eco-clubs in schools</li>
+                        <li>Environmental project competitions</li>
+                        <li>Nature field trips</li>
+                    </ul>
+                </div>
+                <div class="feature-card">
+                    <h3>Information Materials</h3>
+                    <ul>
+                        <li>Informative pamphlets</li>
+                        <li>Village environmental newsletter</li>
+                        <li>Digital resource library</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tools">
+        <div class="container">
+            <h2>Tools and Technologies</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <img src="/api/placeholder/80/80" alt="GIS Mapping">
+                    <h3>GIS Mapping</h3>
+                    <p>For planning green zones and monitoring environmental changes</p>
+                </div>
+                <div class="tool-card">
+                    <img src="/api/placeholder/80/80" alt="IoT Sensors">
+                    <h3>IoT Sensors</h3>
+                    <p>Real-time monitoring of air, water, and soil quality</p>
+                </div>
+                <div class="tool-card">
+                    <img src="/api/placeholder/80/80" alt="Smart Bins">
+                    <h3>Smart Bins</h3>
+                    <p>For efficient waste segregation and collection</p>
+                </div>
+                <div class="tool-card">
+                    <img src="/api/placeholder/80/80" alt="Solar Kits">
+                    <h3>Solar Kits</h3>
+                    <p>Renewable energy solutions for homes and public spaces</p>
+                </div>
+                <div class="tool-card">
+                    <img src="/api/placeholder/80/80" alt="Irrigation Kits">
+                    <h3>Drip Irrigation</h3>
+                    <p>Water-efficient agricultural practices</p>
+                </div>
+                <div class="tool-card">
+                    <img src="/api/placeholder/80/80" alt="Mobile Apps">
+                    <h3>Mobile Apps</h3>
+                    <p>For awareness, reporting, and community engagement</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="progress-section">
+        <div class="container">
+            <h2>Our Progress</h2>
+            <div class="progress-grid">
+                <div class="progress-card">
+                    <h3>Trees Planted</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-percentage="75"></div>
+                    </div>
+                    <p><span class="counter">0</span>% of our target</p>
+                </div>
+                <div class="progress-card">
+                    <h3>Waste Management</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-percentage="60"></div>
+                    </div>
+                    <p><span class="counter">0</span>% of households covered</p>
+                </div>
+                <div class="progress-card">
+                    <h3>Water Conservation</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-percentage="45"></div>
+                    </div>
+                    <p><span class="counter">0</span>% systems installed</p>
+                </div>
+                <div class="progress-card">
+                    <h3>Renewable Energy</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" data-percentage="30"></div>
+                    </div>
+                    <p><span class="counter">0</span>% energy needs met</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="community" id="community">
+        <div class="container">
+            <h2>Community Involvement</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="/api/placeholder/50/50" alt="Village Head">
+                        <div>
+                            <h4>Rajesh Kumar</h4>
+                            <p>Village Head</p>
+                        </div>
+                    </div>
+                    <p>"Our village eco-committee has been working tirelessly to implement these initiatives. The results are already visible with cleaner streets and greener surroundings."</p>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="/api/placeholder/50/50" alt="Youth Leader">
+                        <div>
+                            <h4>Priya Singh</h4>
+                            <p>Youth Group Leader</p>
+                        </div>
+                    </div>
+                    <p>"Young people are at the forefront of our environmental campaigns. We've organized tree plantation drives and waste collection events with great participation."</p>
+                </div>
+                <div class="testimonial">
+                    <div class="testimonial-header">
+                        <img src="/api/placeholder/50/50" alt="School Teacher">
+                        <div>
+                            <h4>Anita Sharma</h4>
+                            <p>School Teacher</p>
+                        </div>
+                    </div>
+                    <p>"Our school eco-club has become a model for others. Students not only learn about environmental protection but also practice it daily."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta">
+        <div class="container">
+            <h2>Join Our Green Initiative</h2>
+            <p>Be part of the transformation and help create a sustainable future for our village</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary" id="volunteer-btn">Volunteer Now</button>
+                <button class="btn btn-secondary" id="donate-btn">Support the Project</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p>Village Development Committee</p>
+                    <p>Email: info@villageenvironment.org</p>
+                    <p>Phone: +91 9876543210</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#components">Components</a></li>
+                        <li><a href="#community">Community</a></li>
+                        <li><a href="#">Gallery</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Village Environment System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        const tabButtons = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons and content
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = button.getAttribute('data-tab');
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Progress bars animation
+        function animateProgressBars() {
+            const progressSection = document.querySelector('.progress-section');
+            const progressFills = document.querySelectorAll('.progress-fill');
+            const counters = document.querySelectorAll('.counter');
+            
+            // Check if element is in viewport
+            function isInViewport(element) {
+                const rect = element.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+                    rect.bottom >= 0
+                );
+            }
+            
+            // Animate counter
+            function animateCounter(counter, target) {
+                let current = 

@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Sports Development Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: 
+                linear-gradient(135deg, #f0a03f, rgba(118, 75, 162, 0.7)),
+                url('image/sport.jpg') no-repeat center center / cover;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .stat {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .project-card:hover::before {
+            left: 100%;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .project-icon {
+            font-size: 3rem;
+            margin-right: 15px;
+            animation: bounce 2s infinite;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .project-description {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        .project-impact {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .project-impact strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            animation: modalSlideIn 0.4s ease-out;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .progress-section {
+            margin: 60px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .progress-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .progress-circle {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .circle-bg {
+            fill: none;
+            stroke: #e6e6e6;
+            stroke-width: 8;
+        }
+
+        .circle-progress {
+            fill: none;
+            stroke: #667eea;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dasharray 2s ease-in-out;
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-ball {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .project-card {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements">
+        <div class="floating-ball" style="width: 60px; height: 60px; top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="floating-ball" style="width: 40px; height: 40px; top: 20%; right: 15%; animation-delay: 2s;"></div>
+        <div class="floating-ball" style="width: 80px; height: 80px; bottom: 30%; left: 5%; animation-delay: 4s;"></div>
+        <div class="floating-ball" style="width: 50px; height: 50px; bottom: 20%; right: 10%; animation-delay: 3s;"></div>
+    </div>
+
+    <header class="hero">
+        <h1>Village Sports Development Hub</h1>
+        <p>Empowering Rural Communities Through Sports Excellence & Youth Development</p>
+        
+        <div class="stats-bar">
+            <div class="stat">
+                <span class="stat-number" data-target="6">0</span>
+                <span class="stat-label">Active Projects</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" data-target="500">0</span>
+                <span class="stat-label">Youth Participants</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" data-target="25">0</span>
+                <span class="stat-label">Villages Reached</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="projects-grid" id="projectsGrid">
+            <!-- Projects will be dynamically loaded here -->
+        </div>
+
+        <div class="progress-section">
+            <h2 class="section-title">Project Impact Dashboard</h2>
+            <div class="progress-grid">
+                <div class="progress-card">
+                    <div class="progress-circle">
+                        <svg width="120" height="120">
+                            <circle class="circle-bg" cx="60" cy="60" r="50"></circle>
+                            <circle class="circle-progress" cx="60" cy="60" r="50" data-progress="75"></circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: bold; color: #667eea;">75%</div>
+                    </div>
+                    <h3>Infrastructure Complete</h3>
+                    <p>Sports facilities constructed and operational</p>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-circle">
+                        <svg width="120" height="120">
+                            <circle class="circle-bg" cx="60" cy="60" r="50"></circle>
+                            <circle class="circle-progress" cx="60" cy="60" r="50" data-progress="90"></circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: bold; color: #667eea;">90%</div>
+                    </div>
+                    <h3>Youth Engagement</h3>
+                    <p>Active participation in sports programs</p>
+                </div>
+
+                <div class="progress-card">
+                    <div class="progress-circle">
+                        <svg width="120" height="120">
+                            <circle class="circle-bg" cx="60" cy="60" r="50"></circle>
+                            <circle class="circle-progress" cx="60" cy="60" r="50" data-progress="60"></circle>
+                        </svg>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: bold; color: #667eea;">60%</div>
+                    </div>
+                    <h3>Training Programs</h3>
+                    <p>Coaching and skill development initiatives</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalBody">
+                <!-- Modal content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Project data
+        const projects = [
+            {
+                icon: '🏏',
+                title: 'Cricket Ground Development',
+                description: 'Building or upgrading local cricket grounds with proper pitches and gear.',
+                impact: 'Encourages youth participation and community bonding through India\'s favorite sport.',
+                details: 'Complete infrastructure development including pitch preparation, boundary setup, pavilion construction, and equipment provision. Partnership with local cricket associations for tournament organization.',
+                budget: '₹2,50,000 - ₹5,00,000',
+                timeline: '3-6 months',
+                beneficiaries: '200+ youth per village'
+            },
+            {
+                icon: '⚽',
+                title: 'Football for Youth Empowerment',
+                description: 'Training camps and inter-village tournaments to promote football skills.',
+                impact: 'Boosts fitness, teamwork, and opens opportunities for sports careers.',
+                details: 'Professional coaching camps, inter-village leagues, talent identification programs, and pathway to district/state level competitions. Focus on both boys and girls participation.',
+                budget: '₹1,50,000 - ₹3,00,000',
+                timeline: '2-4 months setup',
+                beneficiaries: '150+ youth per village'
+            },
+            {
+                icon: '🏐',
+                title: 'Volleyball Court Construction',
+                description: 'Constructing sand or concrete volleyball courts in schools or community centers.',
+                impact: 'A low-cost, high-participation sport especially popular in rural areas.',
+                details: 'Standard court construction with proper net setup, sand/concrete surfacing, and lighting for evening games. Training for local coaches and referees.',
+                budget: '₹75,000 - ₹1,50,000',
+                timeline: '1-2 months',
+                beneficiaries: '100+ participants'
+            },
+            {
+                icon: '🏃',
+                title: 'Athletics & Running Tracks',
+                description: 'Organizing local races, marathons, or school-level track events.',
+                impact: 'Promotes physical health and school participation across all age groups.',
+                details: 'Track construction or marking, organizing regular athletics meets, coaching for track and field events, and creating pathways to district competitions.',
+                budget: '₹1,00,000 - ₹2,50,000',
+                timeline: '2-3 months',
+                beneficiaries: '300+ students and youth'
+            },
+            {
+                icon: '🏋️',
+                title: 'Rural Sports Training Centre',
+                description: 'Partner with Khelo India or local NGOs to set up multi-sport training centers.',
+                impact: 'Identifies talent, reduces migration, and builds local pride.',
+                details: 'Comprehensive training facility with equipment for multiple sports, certified coaches, physiotherapy support, and talent identification programs linked to state sports academies.',
+                budget: '₹5,00,000 - ₹10,00,000',
+                timeline: '6-12 months',
+                beneficiaries: '500+ athletes'
+            },
+            {
+                icon: '🥋',
+                title: 'Traditional & Indigenous Sports',
+                description: 'Preserve traditional games while promoting discipline and strength through Kabaddi, Kushti (wrestling), and Gilli Danda.',
+                impact: 'Cultural pride + physical fitness + inter-generational bonding.',
+                details: 'Revival of traditional sports with proper arenas, training by experienced players, inter-village competitions, and documentation of traditional techniques.',
+                budget: '₹1,00,000 - ₹2,00,000',
+                timeline: '2-4 months',
+                beneficiaries: 'All age groups, 200+ per village'
+            }
+        ];
+
+        // Load projects
+        function loadProjects() {
+            const grid = document.getElementById('projectsGrid');
+            
+            projects.forEach((project, index) => {
+                const card = document.createElement('div');
+                card.className = 'project-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                
+                card.innerHTML = `
+                    <div class="project-header">
+                        <div class="project-icon">${project.icon}</div>
+                        <h3 class="project-title">${project.title}</h3>
+                    </div>
+                    <p class="project-description">${project.description}</p>
+                    <div class="project-impact">
+                        <strong>Impact:</strong>
+                        ${project.impact}
+                    </div>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="openModal(${index})">View Details</button>
+                        <button class="btn btn-secondary" onclick="initiateProject(${index})">Start Project</button>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        // Modal functionality
+        function openModal(projectIndex) {
+            const modal = document.getElementById('projectModal');
+            const modalBody = document.getElementById('modalBody');
+            const project = projects[projectIndex];
+            
+            modalBody.innerHTML = `
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="font-size: 4rem; margin-bottom: 20px;">${project.icon}</div>
+                    <h2 style="color: #2c3e50; margin-bottom: 15px;">${project.title}</h2>
+                </div>
+                
+                <div style="margin-bottom: 25px;">
+                    <h3 style="color: #667eea; margin-bottom: 10px;">Project Overview</h3>
+                    <p style="line-height: 1.6; color: #555;">${project.details}</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 25px;">
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                        <strong style="color: #667eea;">Budget Range</strong>
+                        <div style="font-size: 1.1rem; margin-top: 5px;">${project.budget}</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                        <strong style="color: #667eea;">Timeline</strong>
+                        <div style="font-size: 1.1rem; margin-top: 5px;">${project.timeline}</div>
+                    </div>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px;">
+                        <strong style="color: #667eea;">Beneficiaries</strong>
+                        <div style="font-size: 1.1rem; margin-top: 5px;">${project.beneficiaries}</div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: white; padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+                    <strong style="display: block; margin-bottom: 10px; font-size: 1.2rem;">Expected Impact</strong>
+                    <p>${project.impact}</p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <button class="btn btn-primary" style="margin-right: 15px;" onclick="initiateProject(${projectIndex}); closeModal();">Start This Project</button>
+                    <button class="btn btn-secondary" onclick="downloadProjectPlan(${projectIndex})">Download Plan</button>
+                </div>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').style.display = 'none';
+        }
+
+        function initiateProject(projectIndex) {
+            const project = projects[projectIndex];
+            alert(`🎉 Great choice! Initiating "${project.title}" project.\n\nNext steps:\n1. Community meeting scheduled\n2. Resource assessment\n3. Partnership discussions\n4. Implementation planning\n\nProject coordinator will contact you within 24 hours.`);
+        }
+
+        function downloadProjectPlan(projectIndex) {
+            const project = projects[projectIndex];
+            alert(`📄 Downloading detailed project plan for "${project.title}".\n\nThe plan includes:\n• Technical specifications\n• Budget breakdown\n• Implementation timeline\n• Resource requirements\n• Partnership opportunities`);
+        }
+
+        // Animate counters
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= target) {
+                        current = target;
+                        clearInterval(timer);
+                    }
+                    counter.textContent = Math.floor(current);
+                }, 16);
+            });
+        }
+
+        // Animate progress circles
+        function animateProgressCircles() {
+            const circles = document.querySelectorAll('.circle-progress');
+            
+            circles.forEach(circle => {
+                const progress = parseInt(circle.getAttribute('data-progress'));
+                const circumference = 2 * Math.PI * 50;
+                const offset = circumference - (progress / 100) * circumference;
+                
+                circle.style.strokeDasharray = circumference;
+                circle.style.strokeDashoffset = circumference;
+                
+                setTimeout(() => {
+                    circle.style.strokeDashoffset = offset;
+                }, 500);
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProjects();
+            setTimeout(animateCounters, 500);
+            setTimeout(animateProgressCircles, 1000);
+        });
+
+        // Modal close events
+        document.querySelector('.close').onclick = closeModal;
+        window.onclick = function(event) {
+            const modal = document.getElementById('projectModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+
+        // Add scroll animation
+        window.addEventListener('scroll', function() {
+            const cards = document.querySelectorAll('.project-card');
+            
+            cards.forEach(card => {
+                const cardTop = card.getBoundingClientRect().top;
+                const cardVisible = 150;
+                
+                if (cardTop < window.innerHeight - cardVisible) {
+                    card.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

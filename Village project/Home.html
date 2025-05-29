@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="Main.html" class="active">Home</a>
+        <a href="#projects">Projects</a>
+        <a href="Goverment Scheme">Schemes</a>
+        <a href="map.html">Map</a>
+        <a href="#contact">Contact</a>
+        <a href="supporter.html">Supporter</a>
+        <div class="bx bx-moon" id="darkMode-icon" title="Toggle Dark Mode"></div>
+    <div class="bx bx-menu" id="menu-icon" title="Menu"></div>
+    </nav>
+    <div class="collapse navbar-collapse navbar-right" id="bs-WDM-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+            
+       <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="font-size:15px">☞<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="skill-training.html">Skill Training Program</a></li>
+                    <li class="divider"></li>
+                    <li><a href="school-renovation.html">School Renovation</a></li>
+                    <li class="divider"></li>
+                    <li><a href="solar-lights.html">Solar Street Lights</a></li>
+                    <li class="divider"></li>
+                    <li><a href="health-camps.html">Health Camps</a></li>
+                    <li class="divider"></li>
+                    <li><a href="drinking-water.html">Drinking Water Project</a></li>
+                    <li class="divider"></li>
+                    <li><a href="roads.html">Road Construction</a></li>
+                    <li class="divider"></li>
+                    <li><a href="sports.html">Sports Development</a></li>
+                </ul>
+    
+            
+    
+            <li><a href="login.html" style="font-size:15px"></a></li>
+        </ul>
+    </div>
+    
+</header>
+
+</body>
+</html/* dropdown -----------------------------------------------*/
+/* Basic navbar container */
+.navbar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: transparent;
+}
+
+/* Navbar items */
+.navbar-nav > li {
+    position: relative;
+}
+
+.navbar-nav > li > a {
+    display: block;
+    padding: 1.1rem 7%;
+    color: #ecf0f1;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+    background-color: black;
+    color: #fff;
+}
+
+/* Dropdown toggle caret style */
+.navbar-nav .dropdown-toggle::after {
+    content: " ▼";
+    font-size: 12px;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color:transparent;
+    min-width: 200px;
+    z-index: 1000;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* Show dropdown on hover */
+.navbar-nav li:hover .dropdown-menu {
+    display: block;
+}
+
+/* Dropdown menu items */
+.dropdown-menu li a {
+    padding: 12px 16px;
+    color: #ecf0f1;
+    display: block;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.dropdown-menu li a:hover {
+    background-color: #16a085;
+    color: white;
+}
+
+/* Divider line */
+.dropdown-menu .divider {
+    height: 1px;
+    margin: 4px 0;
+    background-color: #7f8c8d;
+}
+
+/* Responsive behavior */
+@media (max-width: 768px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar-nav li {
+        width: 100%;
+    }
+
+    .dropdown-menu {
+        position: relative;
+        top: 0;
+        left: 0;
+        box-shadow: none;
+        border-radius: 0;
+        width: 100%;
+    }
+}

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education System for Village Development</title>
+    <style>
+        :root {
+            --primary-color: #f0a03f;
+            --primary-dark: #d68b2a;
+            --primary-light: #ffb966;
+            --text-dark: #333333;
+            --text-light: #ffffff;
+            --bg-light: #f9f9f9;
+            --bg-dark: #555555;
+            --success: #4CAF50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-weight: bold;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 0.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .nav-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: none;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-menu li {
+            margin-left: 1.5rem;
+        }
+        
+        .nav-menu a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover {
+            color: var(--bg-light);
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        .welcome-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .welcome-section h1 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .language-selector {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .language-btn {
+            background-color: var(--bg-light);
+            border: 1px solid var(--primary-color);
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .language-btn.active {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        /* Dashboard Styles */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .dashboard-card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .dashboard-card-icon {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .dashboard-card h3 {
+            color: var(--primary-color);
+        }
+        
+        .dashboard-card p {
+            margin-bottom: 1rem;
+            color: var(--bg-dark);
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Content Pages */
+        .content-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .content-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+        
+        .content-section h3 {
+            margin: 1.5rem 0 0.5rem;
+            color: var(--primary-dark);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .back-btn i {
+            margin-right: 0.5rem;
+        }
+        
+        /* Education Institutions */
+        .institutions-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .filter-btn {
+            background-color: var(--bg-light);
+            border: 1px solid var(--primary-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+        }
+        
+        .filter-btn.active {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        .school-card {
+            background-color: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .school-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .school-type {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .school-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .school-detail-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .school-detail-item i {
+            margin-right: 0.5rem;
+            color: var(--primary-color);
+            min-width: 16px;
+        }
+        
+        /* Schemes and Scholarships */
+        .scheme-card {
+            background-color: var(--bg-light);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .scheme-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .scheme-tag {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .accordion {
+            background-color: var(--bg-light);
+            border: none;
+            padding: 1rem;
+            width: 100%;
+            text-align: left;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        
+        .accordion:hover {
+            background-color: var(--primary-light);
+        }
+        
+        .accordion-content {
+            padding: 0 1rem 1rem;
+            display: none;
+            background-color: var(--bg-light);
+            border-radius: 0 0 8px 8px;
+            margin-top: -0.5rem;
+        }
+        
+        .accordion.active + .accordion-content {
+            display: block;
+        }
+        
+        /* Digital Learning */
+        .learning-resources {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .resource-card {
+            background-color: var(--bg-light);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .resource-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .resource-img {
+            height: 150px;
+            background-color: var(--primary-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--primary-dark);
+            font-size: 3rem;
+        }
+        
+        .resource-content {
+            padding: 1rem;
+        }
+        
+        .resource-content h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-dark);
+        }
+        
+        .resource-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-top: 0.5rem;
+        }
+        
+        .resource-tag {
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+        
+        /* Teacher Platform */
+        .volunteer-form {
+            background-color: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-check input {
+            margin-right: 0.5rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: left;
+        }
+        
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--primary-light);
+            padding-bottom: 0.5rem;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-section a {
+            color: var(--text-light);
+            text-decoration: none;
+        }
+        
+        .footer-section a:hover {
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--primary-light);
+        }
+        
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .tab-group {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+        
+        .tab-btn {
+            padding: 0.5rem 1rem;
+            flex: 1;
+            text-align: center;
+            background-color: var(--bg-light);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--primary-color);
+            color: var(--text-light);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .role-select {
+            display: flex;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        
+        .role-option {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .role-option.active {
+            border-color: var(--primary-color);
+            background-color: var(--primary-light);
+            color: var(--primary-dark);
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: -100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--primary-color);
+                flex-direction: column;
+                padding: 2rem 0;
+                transition: top 0.5s ease;
+                z-index: 99;
+            }
+            
+            .nav-menu.active {
+                top: 64px;
+            }
+            
+            .nav-menu li {
+                margin: 0.5rem 0;
+                text-align: center;
+            }
+            
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .school-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-book-open"></i>
+                <span>Village Education Portal</span>
+            </div>
+            <button class="nav-toggle" id="navToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="Main.html" class="nav-link" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="institutions">Educational Institutions</a></li>
+                <li><a href="#" class="nav-link" data-page="schemes">Schemes & Scholarships</a></li>
+                <li><a href="#" class="nav-link" data-page="digital-learning">Digital Learning</a></li>
+                <li><a href="#" class="nav-link" data-page="teacher-platform">Teacher Platform</a></li>
+                <li><a href="#" class="login-btn" id="loginBtn">Login</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Home/Dashboard Page -->
+        <div class="page" id="homePage">
+            <section class="welcome-section">
+                <h1>Welcome to the Village Education Portal</h1>
+                <p>Access quality education, scholarships, and learning resources all in one place.</p>
+                <div class="language-selector">
+                    <button class="language-btn active" data-lang="en">English</button>
+                    <button class="language-btn" data-lang="hi">हिन्दी</button>
+                    <button class="language-btn" data-lang="local">Local Language</button>
+                </div>
+            </section>
+
+            <div class="dashboard">
+                <div class="dashboard-card" data-page="institutions">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">
+                            <i class="fas fa-school"></i>
+                        </div>
+                        <h3>Educational Institutions</h3>
+                    </div>
+                    <p>Find schools, colleges, and other educational institutions near you.</p>
+                    <a href="#" class="btn">Explore</a>
+                </div>
+
+                <div class="dashboard-card" data-page="schemes">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">
+                            <i class="fas fa-hand-holding-usd"></i>
+                        </div>
+                        <h3>Schemes & Scholarships</h3>
+                    </div>
+                    <p>Learn about government schemes and scholarships for education.</p>
+                    <a href="#" class="btn">View Schemes</a>
+                </div>
+
+                <div class="dashboard-card" data-page="digital-learning">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">
+                            <i class="fas fa-laptop"></i>
+                        </div>
+                        <h3>Digital Learning</h3>
+                    </div>
+                    <p>Access free online courses, e-books, and learning materials.</p>
+                    <a href="#" class="btn">Start Learning</a>
+                </div>
+
+                <div class="dashboard-card" data-page="teacher-platform">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>Teacher Platform</h3>
+                    </div>
+                    <p>Register as a volunteer teacher or find tutors for students.</p>
+                    <a href="#" class="btn">Join as Teacher</a>
+                </div>
+
+                <div class="dashboard-card" data-page="learning-centers">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h3>Learning Centers</h3>
+                    </div>
+                    <p>Find night schools and village learning centers for adults.</p>
+                    <a href="#" class="btn">Find Centers</a>
+                </div>
+
+                <div class="dashboard-card" data-page="events">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">
+                            <i class="fas fa-calendar-alt"></i>
+                        </div>
+                        <h3>Events & Exams</h3>
+                    </div>
+                    <p>Stay updated with upcoming events, exams, and workshops.</p>
+                    <a href="#" class="btn">View Calendar</a>
+                </div>
+
+                <div class="dashboard-card" data-page="downloads">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">
+                            <i class="fas fa-download"></i>
+                        </div>
+                        <h3>Downloads</h3>
+                    </div>
+                    <p>Download forms, applications, and educational materials.</p>
+                    <a href="#" class="btn">Download Files</a>
+                </div>
+
+                <div class="dashboard-card" data-page="progress">
+                    <div class="dashboard-card-header">
+                        <div class="dashboard-card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3>Progress Tracker</h3>
+                    </div>
+                    <p>Track your educational progress and achievements.</p>
+                    <a href="#" class="btn">Track Progress</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Educational Institutions Page -->
+        <div class="page hidden" id="institutionsPage">
+            <a href="#" class="back-btn" data-page="home"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+            <div class="content-section">
+                <h2>Educational Institutions Directory</h2>
+                <p>Find schools, colleges, and educational institutions in your area.</p>
+                
+                <div class="institutions-filter">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="govt">Government</button>
+                    <button class="filter-btn" data-filter="private">Private</button>
+                    <button class="filter-btn" data-filter="ngo">NGO</button>
+                    <button class="filter-btn" data-filter="primary">Primary</button>
+                    <button class="filter-btn" data-filter="secondary">Secondary</button>
+                    <button class="filter-btn" data-filter="higher">Higher Secondary</button>
+                    <button class="filter-btn" data-filter="college">College</button>
+                    <button class="filter-btn" data-filter="iti">ITI/Polytechnic</button>
+                </div>
+                
+                <div class="schools-container">
+                    <!-- School 1 -->
+                    <div class="school-card" data-type="govt primary">
+                        <div class="school-header">
+                            <h3>Government Primary School, Rampur</h3>
+                            <span class="school-type">Government</span>
+                        </div>
+                        <p>Primary School (Class 1-5) | Medium: Hindi</p>
+                        <div class="school-details">
+                            <div class="school-detail-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 9876543210</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>gps.rampur@edu.gov.in</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Rampur Village, Near Panchayat Bhawan</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-book"></i>
+                                <span>Facilities: Library, Mid-day Meal</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <a href="#" class="btn">View on Map</a>
+                            <a href="#" class="btn" style="margin-left: 0.5rem; background-color: var(--success);">Admission Details</a>
+                        </div>
+                    </div>
+
+                    <!-- School 2 -->
+                    <div class="school-card" data-type="private secondary higher">
+                        <div class="school-header">
+                            <h3>Saraswati Vidya Mandir</h3>
+                            <span class="school-type">Private</span>
+                        </div>
+                        <p>Secondary School (Class 6-12) | Medium: English, Hindi</p>
+                        <div class="school-details">
+                            <div class="school-detail-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 9876543211</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>svmschool@gmail.com</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Main Road, Rampur Village</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-book"></i>
+                                <span>Facilities: Library, Computer Lab, Science Lab, Sports Ground</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <a href="#" class="btn">View on Map</a>
+                            <a href="#" class="btn" style="margin-left: 0.5rem; background-color: var(--success);">Admission Details</a>
+                        </div>
+                    </div>
+
+                    <!-- College -->
+                    <div class="school-card" data-type="govt college">
+                        <div class="school-header">
+                            <h3>District Government College</h3>
+                            <span class="school-type">Government</span>
+                        </div>
+                        <p>Degree College | Medium: English, Hindi</p>
+                        <div class="school-details">
+                            <div class="school-detail-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 9876543212</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>dgc@edu.gov.in</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>District Headquarters, 5 km from Rampur</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-book"></i>
+                                <span>Facilities: Library, Labs, Hostel, Sports Complex</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1rem;">
+                            <a href="#" class="btn">View on Map</a>
+                            <a href="#" class="btn" style="margin-left: 0.5rem; background-color: var(--success);">Admission Details</a>
+                        </div>
+                    </div>
+
+                    <!-- ITI -->
+                    <div class="school-card" data-type="govt iti">
+                        <div class="school-header">
+                            <h3>Government Industrial Training Institute</h3>
+                            <span class="school-type">Government</span>
+                        </div>
+                        <p>ITI | Medium: Hindi</p>
+                        <div class="school-details">
+                            <div class="school-detail-item">
+                                <i class="fas fa-phone"></i>
+                                <span>+91 9876543213</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>iti.rampur@gov.in</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Industrial Area, 3 km from Rampur</span>
+                            </div>
+                            <div class="school-detail-item">
+                                <i class="fas fa-book"></i>
+                                <span>Facilities: Workshops, Labs, Library</span>
+                            </div>
+                        </div>
+                        <div style="margin-top:

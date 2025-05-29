@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Volunteers & Supporters | BHARAT.V</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+    }
+
+    header {
+      background-color: #f0a03f;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #f0a03f;
+    }
+
+    .role {
+      font-weight: bold;
+      color: #f0a03f;
+    }
+
+    .contribution {
+      margin: 10px 0;
+    }
+
+    .contact {
+      font-size: 0.9em;
+      color: #555;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Volunteers & Supporters</h1>
+    <p>Meet the changemakers behind the village development</p>
+  </header>
+
+  <div class="container">
+    <div class="grid">
+      
+      <!-- Supporter Card 1 -->
+      <div class="card">
+        <h3>Amit Kumar</h3>
+        <p class="role">NGO Coordinator</p>
+        <p class="contribution">Organized health camps and sanitation drives across 5 villages.</p>
+        <p class="contact">📞 +91 98765 43210<br>✉️ amit.ngo@example.org</p>
+      </div>
+
+      <!-- Supporter Card 2 -->
+      <div class="card">
+        <h3>Sunita Devi</h3>
+        <p class="role">Village Leader</p>
+        <p class="contribution">Led women empowerment workshops and literacy programs.</p>
+        <p class="contact">📞 +91 91234 56789<br>✉️ sunita@bharatv.org</p>
+      </div>
+
+      <!-- Supporter Card 3 -->
+      <div class="card">
+        <h3>Rahul Sharma</h3>
+        <p class="role">Volunteer</p>
+        <p class="contribution">Assisted in building digital infrastructure and internet kiosks.</p>
+        <p class="contact">📞 +91 99887 66554<br>✉️ rahul.vol@example.com</p>
+      </div>
+
+      <!-- Supporter Card 4 -->
+      <div class="card">
+        <h3>Seva Foundation</h3>
+        <p class="role">Non-Profit Organization</p>
+        <p class="contribution">Donated medical supplies and educational kits for 3 schools.</p>
+        <p class="contact">🌐 www.sevafoundation.org<br>✉️ contact@seva.org</p>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

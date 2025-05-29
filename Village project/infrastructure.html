@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Village Infrastructure Dashboard</title>
+    <style>
+        :root {
+            --primary-color: #f0a03f;
+            --primary-dark: #d88c2a;
+            --primary-light: #f8c078;
+            --text-color: #333;
+            --bg-light: #f9f9f9;
+            --bg-dark: #f3f3f3;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .logo-icon {
+            background-color: var(--primary-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: var(--primary-light);
+            color: white;
+        }
+        
+        /* Main Content */
+        main {
+            padding: 30px 0;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .dashboard-title h2 {
+            font-size: 1.8rem;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+        
+        .dashboard-title p {
+            color: #666;
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .search-bar input {
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
+        }
+        
+        .search-bar button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .search-bar button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .category-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .card-icon {
+            font-size: 1.5rem;
+        }
+        
+        .card-content {
+            padding: 15px;
+        }
+        
+        .card-content ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+        
+        .card-content li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .card-content li:last-child {
+            border-bottom: none;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-good {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .status-fair {
+            background-color: var(--warning);
+            color: white;
+        }
+        
+        .status-poor {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .view-all {
+            text-align: center;
+            margin-top: 15px;
+        }
+        
+        .view-all a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        /* Projects Section */
+        .projects-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .section-header h3 {
+            color: var(--text-color);
+            font-size: 1.5rem;
+        }
+        
+        .section-header .button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        
+        .section-header .button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .projects-list {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .projects-list th, .projects-list td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .projects-list th {
+            background-color: var(--bg-dark);
+            font-weight: 600;
+        }
+        
+        .projects-list tr:hover {
+            background-color: var(--bg-light);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+        }
+        
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+        }
+        
+        .close-modal {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            margin-bottom: 20px;
+        }
+        
+        .modal-body h4 {
+            margin: 15px 0 10px;
+            color: var(--text-color);
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        
+        .modal-footer button {
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .modal-footer .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .modal-footer .btn-secondary {
+            background-color: #eee;
+            color: var(--text-color);
+            border: none;
+        }
+        
+        .modal-footer .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .modal-footer .btn-secondary:hover {
+            background-color: #ddd;
+        }
+        
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        /* Statistics Cards */
+        .statistics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .search-bar {
+                width: 100%;
+            }
+            
+            .search-bar input {
+                flex: 1;
+            }
+            
+            .statistics-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .projects-list {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .statistics-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">🏘️</div>
+                    <h1>Village Infrastructure System</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="Main.html" class="active">Home</a></li>
+                        <li><a href="#" class="active">Dashboard</a></li>
+                        <li><a href="#">Projects</a></li>
+                        <li><a href="#">Reports</a></li>
+                        <li><a href="#">Settings</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <div class="dashboard-header">
+                <div class="dashboard-title">
+                    <h2>Village Infrastructure Dashboard</h2>
+                    <p>Monitor and manage all infrastructure components</p>
+                </div>
+                <div class="search-bar">
+                    <input type="text" placeholder="Search by project, location...">
+                    <button>Search</button>
+                </div>
+            </div>
+            
+            <div class="statistics-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total Projects</div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-label">Active Projects</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Roads</div>
+                    <div class="stat-value">85%</div>
+                    <div class="stat-label">Coverage</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Electrification</div>
+                    <div class="stat-value">92%</div>
+                    <div class="stat-label">Homes Connected</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Water Supply</div>
+                    <div class="stat-value">78%</div>
+                    <div class="stat-label">Access Rate</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="category-card" data-category="roads">
+                    <div class="card-header">
+                        <h3>Roads & Transportation</h3>
+                        <div class="card-icon">🛣️</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>
+                                <span>Main Roads</span>
+                                <span class="status status-good">Good</span>
+                            </li>
+                            <li>
+                                <span>Link Roads</span>
+                                <span class="status status-fair">Fair</span>
+                            </li>
+                            <li>
+                                <span>Public Transport</span>
+                                <span class="status status-poor">Limited</span>
+                            </li>
+                        </ul>
+                        <div class="view-all">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="electricity">
+                    <div class="card-header">
+                        <h3>Electricity Supply</h3>
+                        <div class="card-icon">⚡</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>
+                                <span>Home Connections</span>
+                                <span class="status status-good">92%</span>
+                            </li>
+                            <li>
+                                <span>Daily Supply</span>
+                                <span class="status status-fair">18 hrs</span>
+                            </li>
+                            <li>
+                                <span>Solar Energy</span>
+                                <span class="status status-poor">15%</span>
+                            </li>
+                        </ul>
+                        <div class="view-all">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="water">
+                    <div class="card-header">
+                        <h3>Water & Sanitation</h3>
+                        <div class="card-icon">💧</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>
+                                <span>Water Sources</span>
+                                <span class="status status-fair">Fair</span>
+                            </li>
+                            <li>
+                                <span>Household Toilets</span>
+                                <span class="status status-good">85%</span>
+                            </li>
+                            <li>
+                                <span>Drainage System</span>
+                                <span class="status status-poor">Poor</span>
+                            </li>
+                        </ul>
+                        <div class="view-all">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="healthcare">
+                    <div class="card-header">
+                        <h3>Healthcare Infrastructure</h3>
+                        <div class="card-icon">🏥</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>
+                                <span>PHC Status</span>
+                                <span class="status status-good">Operational</span>
+                            </li>
+                            <li>
+                                <span>Doctor Availability</span>
+                                <span class="status status-fair">Part-time</span>
+                            </li>
+                            <li>
+                                <span>Ambulance Service</span>
+                                <span class="status status-poor">On Call Only</span>
+                            </li>
+                        </ul>
+                        <div class="view-all">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="education">
+                    <div class="card-header">
+                        <h3>Educational Infrastructure</h3>
+                        <div class="card-icon">🏫</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>
+                                <span>School Buildings</span>
+                                <span class="status status-good">Good</span>
+                            </li>
+                            <li>
+                                <span>Computer Facilities</span>
+                                <span class="status status-poor">Limited</span>
+                            </li>
+                            <li>
+                                <span>Playgrounds</span>
+                                <span class="status status-fair">Available</span>
+                            </li>
+                        </ul>
+                        <div class="view-all">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="communication">
+                    <div class="card-header">
+                        <h3>Communication & Connectivity</h3>
+                        <div class="card-icon">📡</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>
+                                <span>Internet Access</span>
+                                <span class="status status-fair">4G Available</span>
+                            </li>
+                            <li>
+                                <span>Public Wi-Fi</span>
+                                <span class="status status-poor">Limited</span>
+                            </li>
+                            <li>
+                                <span>CSC Centers</span>
+                                <span class="status status-good">Operational</span>
+                            </li>
+                        </ul>
+                        <div class="view-all">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="housing">
+                    <div class="card-header">
+                        <h3>Housing & Public Buildings</h3>
+                        <div class="card-icon">🏘️</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>
+                                <span>Panchayat Bhavan</span>
+                                <span class="status status-good">Operational</span>
+                            </li>
+                            <li>
+                                <span>Community Hall</span>
+                                <span class="status status-fair">Needs Repair</span>
+                            </li>
+                            <li>
+                                <span>PM Awas Yojana</span>
+                                <span class="status status-good">65 Homes</span>
+                            </li>
+                        </ul>
+                        <div class="view-all">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="category-card" data-category="agriculture">
+                    <div class="card-header">
+                        <h3>Agricultural Infrastructure</h3>
+                        <div class="card-icon">🚜</div>
+                    </div>
+                    <div class="card-content">
+                        <ul>
+                            <li>
+                                <span>Irrigation Facilities</span>
+                                <span class="status status-fair">Partial</span>
+                            </li>
+                            <li>
+                                <span>Cold Storage</span>
+                                <span class="status status-poor">Not Available</span>
+                            </li>
+                            <li>
+                                <span>Equipment Rental</span>
+                                <span class="status status-good">Available</span>
+                            </li>
+                        </ul>
+                        <div class="view-all">
+                            <a href="#">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="projects-section">
+                <div class="section-header">
+                    <h3>Ongoing Projects</h3>
+                    <a href="#" class="button" id="add-project-btn">Add New Project</a>
+                </div>
+                <table class="projects-list">
+                    <thead>
+                        <tr>
+                            <th>Project Name</th>
+                            <th>Category</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Budget</th>
+                            <th>Progress</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projects-table-body">
+                        <tr>
+                            <td>Main Road Expansion</td>
+                            <td>Roads</td>
+                            <td>Jan 15, 2025</td>
+                            <td>Jun 30, 2025</td>
+                            <td>₹25,00,000</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 45%;"></div>
+                                </div>
+                                <span>45%</span>
+                            </td>
+                            <td><button class="view-project" data-id="1">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>Solar Panel Installation</td>
+                            <td>Electricity</td>
+                            <td>Feb 10, 2025</td>
+                            <td>Apr 20, 2025</td>
+                            <td>₹15,00,000</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 70%;"></div>
+                                </div>
+                                <span>70%</span>
+                            </td>
+                            <td><button class="view-project" data-id="2">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>Water Pipeline Extension</td>
+                            <td>Water Supply</td>
+                            <td>Mar 5, 2025</td>
+                            <td>Aug 15, 2025</td>
+                            <td>₹18,50,000</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 30%;"></div>
+                                </div>
+                                <span>30%</span>
+                            </td>
+                            <td><button class="view-project" data-id="3">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>Primary Health Center Upgrade</td>
+                            <td>Healthcare</td>
+                            <td>Apr 12, 2025</td>
+                            <td>Jul 25, 2025</td>
+                            <td>₹12,00,000</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 15%;"></div>
+                                </div>
+                                <span>15%</span>
+                            </td>
+                            <td><button class="view-project" data-id="4">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>Community Wi-Fi Hotspots</td>
+                            <td>Communication</td>
+                            <td>May 1, 2025</td>
+                            <td>Jun 15, 2025</td>
+                            <td>₹5,00,000</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress" style="width: 5%;"></div>
+                                </div>
+                                <span>5%</span>
+                            </td>
+                            <td><button class="view-project" data-id="5">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Project Details Modal -->
+    <div class="modal" id="project-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Project Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content will be loaded dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Close</button>
+                <button class="btn-primary" id="edit-project-btn">Edit Project</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add/Edit Project Modal -->
+    <div class="modal" id="add-edit-project-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="add-edit-modal-title">Add New Project</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="project-form">
+                    <div class="form-group">
+                        <label for="project-name">Project Name</label>
+                        <input type="text" id="project-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-category">Category</label>
+                        <select id="project-category" required>
+                            <option value="">Select Category</option>
+                            <option value="Roads">Roads & Transportation</option>
+                            <option value="Electricity">Electricity Supply</option>
+                            <option value="Water">Water & Sanitation</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Education">Education</option>
+                            <option value="Communication">Communication</option>
+                            <option value="Housing">Housing & Public Buildings</option>
+                            <option value="Agriculture">Agriculture</option>
+                            <option value="Environment">Environment</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-start">Start Date</label>
+                        <input type="date" id="project-start" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-end">End Date</label>
+                        <input type="date" id="project-end" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-budget">Budget (₹)</label>
+                        <input type="number" id="project-budget" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-progress">Progress (%)</label>
+                        <input type="number" id="project-progress" min="0" max="100" value="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-description">Description</label>
+                        <textarea id="project-description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-department">Department Responsible</label>
+                        <input type="text" id="project-department" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-contact">Contact Person</label>
+                        <input type="text" id="project-contact" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Cancel

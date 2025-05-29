@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rural Livelihood Project | Gram Vikas</title>
+    <style>
+        :root {
+            --primary-color: #f0a03f;
+            --secondary-color: #2b5d34;
+            --text-color: #333;
+            --light-bg: #f7f7f7;
+            --white: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        .hero {
+            background-image: url('/api/placeholder/1200/600');
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: var(--white);
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            max-width: 650px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #d8903a;
+        }
+        
+        .section {
+            padding: 5rem 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+            color: #666;
+        }
+        
+        .approach {
+            background-color: var(--light-bg);
+        }
+        
+        .approach-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        
+        .approach-card {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+        
+        .approach-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .approach-card img {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .approach-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .impact {
+            background-color: var(--white);
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+        
+        .stat-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 2rem;
+            background-color: var(--light-bg);
+            border-radius: 8px;
+            text-align: center;
+            border-bottom: 4px solid var(--primary-color);
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+            font-weight: 500;
+        }
+        
+        .testimonials {
+            background-color: var(--light-bg);
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial-card {
+            background-color: var(--white);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .testimonial-text::before {
+            content: '"';
+            font-size: 3rem;
+            color: #e0e0e0;
+            position: absolute;
+            top: -20px;
+            left: -15px;
+            z-index: -1;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            font-size: 1.1rem;
+            color: var(--secondary-color);
+        }
+        
+        .author-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .cta {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cta p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .cta .btn {
+            background-color: var(--white);
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            padding: 1rem 2rem;
+        }
+        
+        .cta .btn:hover {
+            background-color: #f0f0f0;
+        }
+        
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 3rem 2rem;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-col ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col ul li a:hover {
+            color: var(--primary-color);
+        }
+        
+        .footer-col p {
+            color: #ddd;
+            margin-bottom: 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: #444;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.2rem;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .footer-bottom {
+            margin-top: 3rem;
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero {
+                height: auto;
+                padding: 4rem 0;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .approach-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+            }
+            
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">GV</div>
+                <span>Gram Vikas</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="Main.html">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Projects</a></li>
+                    <li><a href="#">Impact</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Rural Livelihood Project</h1>
+            <p>Empowering rural communities through sustainable livelihood development, skills training, and microenterprise support.</p>
+            <a href="#" class="btn">Learn More</a>
+        </div>
+    </section>
+    
+    <section class="section approach">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Approach</h2>
+                <p>We enable marginalized communities to build skills, manage resources, and diversify their livelihoods for sustainable development.</p>
+            </div>
+            <div class="approach-grid">
+                <div class="approach-card">
+                    <img src="/api/placeholder/60/60" alt="Community Mobilization">
+                    <h3>Community Mobilization</h3>
+                    <p>We facilitate community mobilization, helping women's self-help groups and farmer producer organizations develop leadership skills and access resources.</p>
+                </div>
+                <div class="approach-card">
+                    <img src="/api/placeholder/60/60" alt="Skills Development">
+                    <h3>Skills Development</h3>
+                    <p>Providing training in various skills and trades that enhance employment opportunities and encourage entrepreneurship in rural areas.</p>
+                </div>
+                <div class="approach-card">
+                    <img src="/api/placeholder/60/60" alt="Natural Resource Management">
+                    <h3>Natural Resource Management</h3>
+                    <p>Working with communities to develop sustainable agricultural practices, water management, and forest conservation strategies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section impact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Impact</h2>
+                <p>Through our Rural Livelihood Project, we have created lasting change in communities across Odisha and Jharkhand.</p>
+            </div>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-number">60,000+</div>
+                    <div class="stat-label">People Impacted</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">450+</div>
+                    <div class="stat-label">Villages Engaged</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">15,000+</div>
+                    <div class="stat-label">Women Empowered</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">8,000+</div>
+                    <div class="stat-label">Hectares Regenerated</div>
+                </div>
+            </div>
+            
+            <div class="section-title">
+                <h2>Key Achievements</h2>
+            </div>
+            <div class="approach-grid">
+                <div class="approach-card">
+                    <h3>Sustainable Agriculture</h3>
+                    <p>Trained 10,000+ farmers in sustainable agricultural practices, improving crop yields and reducing dependence on chemical fertilizers.</p>
+                </div>
+                <div class="approach-card">
+                    <h3>Women's Collectives</h3>
+                    <p>Established 1,200+ women's self-help groups that now manage microenterprises and community resources.</p>
+                </div>
+                <div class="approach-card">
+                    <h3>Market Linkages</h3>
+                    <p>Created 40+ market linkages for farmers to sell their produce directly, increasing household incomes by 30-40%.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="section testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Community Voices</h2>
+                <p>Hear directly from the communities we work with and how the Rural Livelihood Project has transformed their lives.</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <p>Before joining the women's group, I had no income of my own. Now I run a small poultry business and can support my children's education. The training from Gram Vikas changed everything for me.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="/api/placeholder/50/50" alt="Lakshmi Devi">
+                        <div class="author-info">
+                            <h4>Lakshmi Devi</h4>
+                            <p>Mayurbhanj, Odisha</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <p>The sustainable farming techniques I learned have increased my crop yield and reduced my expenses. My family now has food security throughout the year and a surplus to sell in the market.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="/api/placeholder/50/50" alt="Ramesh Kumar">
+                        <div class="author-info">
+                            <h4>Ramesh Kumar</h4>
+                            <p>Ganjam, Odisha</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        <p>Our village has transformed since Gram Vikas helped us form a producer organization. We now collectively bargain for better prices for our products and have secured loans for expansion.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="/api/placeholder/50/50" alt="Sujata Mahato">
+                        <div class="author-info">
+                            <h4>Sujata Mahato</h4>
+                            <p>Kalahandi, Odisha</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="cta">
+        <div class="container">
+            <h2>Join Our Mission</h2>
+            <p>Help us expand our Rural Livelihood Project to more communities and create sustainable change across rural India.</p>
+            <a href="#" class="btn">Support Our Work</a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-col">
+                <h3>About Gram Vikas</h3>
+                <p>Gram Vikas is an NGO working with rural communities in Odisha, India since 1979, focusing on water, sanitation, education, and livelihood development.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Impact</a></li>
+                    <li><a href="#">Programs</a></li>
+                    <li><a href="#">Resources</a></li>
+                    <li><a href="#">Donate</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Contact Us</h3>
+                <p>Gram Vikas</p>
+                <p>Mohuda Village, Berhampur</p>
+                <p>Ganjam District, Odisha, India</p>
+                <p>Email: info@gramvikas.org</p>
+                <p>Phone: +91 680 2261863</p>
+            </div>
+            <div class="footer-col">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><span>FB</span></a>
+                    <a href="#"><span>TW</span></a>
+                    <a href="#"><span>IG</span></a>
+                    <a href="#"><span>LI</span></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Gram Vikas. All Rights Reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
